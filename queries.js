@@ -1,5 +1,4 @@
 const db = require("./db").db;
-const { hashPassword } = require("./pass");
 
 const createUser = function(first, last, email, hashedPw) {
     const q = `

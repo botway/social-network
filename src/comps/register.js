@@ -25,15 +25,15 @@ export default class Register extends React.Component {
     }
 
     handleSubmit(event){
-        // console.log(this.state);
-        complete = true;
         for (let el of Object.keys(this.state)){
             if(this.state[el] == ""){
                 complete = false;
-                console.log(el);
                 break;
+            }else{
+                complete = true;
             }
         }
+
         if(!complete){
             this.setState({
                 message: "Please, fill out all fields."
@@ -46,8 +46,10 @@ export default class Register extends React.Component {
                 email: this.state.email,
                 password: this.state.password,
             }).then(results=>{
-                if(results.success){
-                    axios.get("/");
+                if(results.data.success){
+                    console.log("You are registered");
+                    location.replace("/");
+                    // axios.get("/");
                 }else{
                     this.setState({
                         message: "Something went wrong!"

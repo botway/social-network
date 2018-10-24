@@ -31,20 +31,18 @@ if (process.env.NODE_ENV != 'production') {
 }
 
 app.get('*', function(req, res) {
-    if(req.url == "/" && !req.session.user){
-        res.redirect("/welcome");
+    if(req.url == "/welcome" && req.session.user){
+        res.redirect("/");
+    } else if (
+        req.url == "/" && !req.session.user
+    ){
+        res.redirect("/welcome")
     }
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get("/welcome",(req,res)=>{
-    if(req.session.user){
-        res.redirect("/");
-    }
-});
 
 app.post("/register", (req, res) => {
-    console.log("REG", req.body);
     hashPassword(req.body.password).then(hash => {
         createUser(req.body.firstName, req.body.lastName, req.body.email, hash)
             .then(results => {
@@ -54,8 +52,6 @@ app.post("/register", (req, res) => {
                 });
             })
             .catch(err => {
-                // req.session.message = err.message;
-                // res.redirect("/register");
                 res.json({
                     success:false
                 });
