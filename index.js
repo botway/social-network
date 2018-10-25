@@ -36,11 +36,16 @@ app.get('*', function(req, res) {
     } else if (
         req.url == "/" && !req.session.user
     ){
-        res.redirect("/welcome")
+        res.redirect("/welcome");
     }
+
     res.sendFile(__dirname + '/index.html');
 });
 
+app.post("/logout", (req,res) => {
+    req.session = null;
+    res.redirect("/welcome");
+});
 
 app.post("/register", (req, res) => {
     hashPassword(req.body.password).then(hash => {
@@ -57,6 +62,39 @@ app.post("/register", (req, res) => {
                 });
                 console.log("register", err.message);
             });
+    });
+});
+
+app.post("/login", (req, res) => {
+    getUser(req.body.email).then(user => {
+        checkPassword(req.body.password, user.password)
+            .then(match => {
+                if (match) {
+                    req.session.user = {
+                        id: user.id,
+                        first_name: user.first_name,
+                        last_name: user.last_name
+                    };
+                    res.json({ success: true });
+                } else {
+                    res.json({
+                        success:false,
+                        message: "invalid password or email"
+                    });
+                }
+            }).catch(err => {
+                console.log(err.message);
+                res.json({
+                    success: false,
+                    message: "invalid password or email"
+                });
+            });
+    }).catch(err => {
+        console.log(err.message);
+        res.json({
+            success: false,
+            message: "invalid password or email"
+        });
     });
 });
 

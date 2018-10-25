@@ -7,7 +7,7 @@ export default class Register extends React.Component {
         super(props);
 
         this.state = {
-            message: "Please, register.",
+            message: "Please, login.",
             error: false
         };
 
@@ -35,18 +35,16 @@ export default class Register extends React.Component {
             });
             return;
         } else {
-            axios.post( "/register",{
-                firstName: this.firstName,
-                lastName: this.lastName,
+            axios.post( "/login",{
                 email: this.email,
                 password: this.password,
-            }).then( results=>{
+            }).then( results => {
                 if ( results.data.success ){
                     location.replace("/");
                 } else {
                     this.setState({
                         error: true,
-                        message: "Something went wrong."
+                        message: results.data.message
                     });
                 }
             });
@@ -58,20 +56,14 @@ export default class Register extends React.Component {
         return (
             <div>
                 <p>{ this.state.message }</p>
-                <input type="text" name="firstName"
-                    onChange= { this.handleChange }
-                    placeholder="First Name"/>
-                <input type="text" name="lastName"
-                    onChange={ this.handleChange }
-                    placeholder="Last Name"/>
                 <input type="email" name="email"
                     onChange={ this.handleChange }
                     placeholder="Email"/>
                 <input type="password" name="password"
                     onChange={ this.handleChange }
                     placeholder="Password"/>
-                <button type="button" onClick={ this.handleSubmit }>SUBMIT</button>
-                <p>Already a member? <Link to="/login">Log in</Link></p>
+                <button type="button" onClick={ this.handleSubmit }>LOG IN</button>
+                <p>Not a member? <Link to="/">Register</Link></p>
             </div>
         );
     }

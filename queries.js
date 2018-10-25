@@ -31,11 +31,8 @@ const getUser = function(email) {
         SELECT first_name,
         last_name,
         registered_users.id,
-        password,
-        signatures.id AS sigId
+        password
         FROM registered_users
-        FULL OUTER JOIN signatures
-        ON registered_users.id = signatures.uid
         WHERE email = $1;
     `;
     const params = [email || null];
