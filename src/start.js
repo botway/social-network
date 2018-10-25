@@ -5,12 +5,10 @@ import Logo from './comps/logo';
 
 let comp;
 
-
-
 if (location.pathname == "/"){
     comp = <Logo url="../assets/bones.png"/>;
 } else if (location.pathname == "/welcome"){
-    comp = <Welcome logo="../assets/bones.png"/>;
+    comp = <div id="container"><Welcome logo="../assets/bones.png"/></div>;
 }
 
 

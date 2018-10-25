@@ -8,7 +8,7 @@ const callToAction = "Sunt in culpa qui officia deserunt."
 
 const Welcome = ({logo}) => {
     return (
-        <div>
+        <div id="welcome">
             <h1>Welcome to</h1>
             <img src={logo} alt="logo"/>
             <p>{desc}</p>

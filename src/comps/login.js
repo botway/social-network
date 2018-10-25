@@ -5,6 +5,12 @@ import { Link } from 'react-router-dom';
 export default class Register extends React.Component {
     constructor(props) {
         super(props);
+        this.complete = false;
+
+        this.forms = {
+            email: "",
+            password: ""
+        };
 
         this.state = {
             message: "Please, login.",
@@ -16,12 +22,13 @@ export default class Register extends React.Component {
     }
 
     handleChange(event){
-        this[event.target.name] = event.target.value;
+        this.forms[event.target.name] = event.target.value;
     }
 
     handleSubmit(event){
-        for (let el of Object.keys(this.state)){
-            if(this[el] == ""){
+
+        for (let el of Object.keys(this.forms)){
+            if(!this[el]){
                 this.complete = false;
                 break;
             } else {
@@ -34,11 +41,9 @@ export default class Register extends React.Component {
                 message: "Please, fill out all fields."
             });
             return;
+
         } else {
-            axios.post( "/login",{
-                email: this.email,
-                password: this.password,
-            }).then( results => {
+            axios.post( "/login", this.forms).then( results => {
                 if ( results.data.success ){
                     location.replace("/");
                 } else {
@@ -62,6 +67,7 @@ export default class Register extends React.Component {
                 <input type="password" name="password"
                     onChange={ this.handleChange }
                     placeholder="Password"/>
+                <br/>
                 <button type="button" onClick={ this.handleSubmit }>LOG IN</button>
                 <p>Not a member? <Link to="/">Register</Link></p>
             </div>

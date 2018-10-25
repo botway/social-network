@@ -5,7 +5,13 @@ import { Link } from 'react-router-dom';
 export default class Register extends React.Component {
     constructor(props) {
         super(props);
-
+        this.complete = false;
+        this.forms = {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: ""
+        };
         this.state = {
             message: "Please, register.",
             error: false
@@ -16,12 +22,13 @@ export default class Register extends React.Component {
     }
 
     handleChange(event){
-        this[event.target.name] = event.target.value;
+        this.forms[event.target.name] = event.target.value;
     }
 
     handleSubmit(event){
-        for (let el of Object.keys(this.state)){
-            if(this[el] == ""){
+
+        for (let el of Object.keys(this.forms)){
+            if(!this[el]){
                 this.complete = false;
                 break;
             } else {
@@ -35,12 +42,7 @@ export default class Register extends React.Component {
             });
             return;
         } else {
-            axios.post( "/register",{
-                firstName: this.firstName,
-                lastName: this.lastName,
-                email: this.email,
-                password: this.password,
-            }).then( results=>{
+            axios.post( "/register", this.forms ).then( results=>{
                 if ( results.data.success ){
                     location.replace("/");
                 } else {
@@ -56,7 +58,7 @@ export default class Register extends React.Component {
 
     render() {
         return (
-            <div>
+            <div id="register">
                 <p>{ this.state.message }</p>
                 <input type="text" name="firstName"
                     onChange= { this.handleChange }
@@ -64,12 +66,14 @@ export default class Register extends React.Component {
                 <input type="text" name="lastName"
                     onChange={ this.handleChange }
                     placeholder="Last Name"/>
+                <br/>
                 <input type="email" name="email"
                     onChange={ this.handleChange }
                     placeholder="Email"/>
                 <input type="password" name="password"
                     onChange={ this.handleChange }
                     placeholder="Password"/>
+                <br/>
                 <button type="button" onClick={ this.handleSubmit }>SUBMIT</button>
                 <p>Already a member? <Link to="/login">Log in</Link></p>
             </div>
