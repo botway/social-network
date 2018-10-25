@@ -6,12 +6,14 @@ export default class Register extends React.Component {
     constructor(props) {
         super(props);
         this.complete = false;
+
         this.forms = {
             firstName: "",
             lastName: "",
             email: "",
             password: ""
         };
+
         this.state = {
             message: "Please, register.",
             error: false
@@ -28,14 +30,14 @@ export default class Register extends React.Component {
     handleSubmit(event){
 
         for (let el of Object.keys(this.forms)){
-            if(!this[el]){
+            if(!this.forms[el]){
                 this.complete = false;
                 break;
             } else {
                 this.complete = true;
             }
         }
-
+        console.log(this.complete);
         if(!this.complete){
             this.setState({
                 message: "Please, fill out all fields."

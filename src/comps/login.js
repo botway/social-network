@@ -28,7 +28,7 @@ export default class Register extends React.Component {
     handleSubmit(event){
 
         for (let el of Object.keys(this.forms)){
-            if(!this[el]){
+            if(!this.forms[el]){
                 this.complete = false;
                 break;
             } else {
