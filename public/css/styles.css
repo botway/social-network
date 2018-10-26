@@ -39,3 +39,8 @@ button:hover {
     color: yellow;
     cursor: pointer;
 }
+
+#userPic {
+    float: right;
+    width: 5em;
+}

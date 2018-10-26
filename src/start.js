@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Welcome from './comps/welcome';
-import Logo from './comps/logo';
+import App from './comps/app'
 
 let comp;
 
 if (location.pathname == "/"){
-    comp = <Logo url="../assets/bones.png"/>;
+    comp = <App />;
 } else if (location.pathname == "/welcome"){
-    comp = <div id="container"><Welcome logo="../assets/bones.png"/></div>;
+    comp = <div id="container"><Welcome /></div>;
 }
 
 

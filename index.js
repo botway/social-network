@@ -3,9 +3,14 @@ const app = express();
 const compression = require('compression');
 const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
+const { upload } = require("./s3");
+const { s3Url } = require("./config.json");
 
 const { checkPassword, hashPassword } = require("./pass");
-const { createUser, getUser } = require("./queries");
+const { createUser, getUser, saveImage, getUserById } = require("./queries");
 
 app.use(compression());
 app.use(express.static("public"));
@@ -30,6 +35,29 @@ if (process.env.NODE_ENV != 'production') {
     app.use('/bundle.js', (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
 
+const diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+
+app.get("/user", async (req, res) => {
+    const data = await getUserById(req.session.user.id);
+    res.json(data);
+});
+
 app.get('*', function(req, res) {
     if(req.url == "/welcome" && req.session.user){
         res.redirect("/");
@@ -40,6 +68,24 @@ app.get('*', function(req, res) {
     }
 
     res.sendFile(__dirname + '/index.html');
+});
+
+app.post("/upload", uploader.single("file"), upload, function(req, res) {
+    console.log(req.body, req.file);
+    const imgUrl = s3Url + req.file.filename;
+
+    const data = {
+        url: imgUrl,
+        uid: req.body.uid
+    };
+
+    saveImage(data)
+        .then(results => {
+            res.json(results);
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
 });
 
 app.post("/logout", (req,res) => {

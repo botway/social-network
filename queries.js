@@ -47,7 +47,55 @@ const getUser = function(email) {
         });
 };
 
+const getUserById = function(id) {
+    const q = `
+        SELECT first_name,
+        last_name,
+        registered_users.id,
+        images.url AS imgUrl
+        FROM registered_users
+        FULL OUTER JOIN images
+        ON registered_users.id = images.uid
+        WHERE registered_users.id = $1
+        ORDER BY images.id DESC;
+    `;
+    const params = [id || null];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
+};
+
+const saveImage = function(data) {
+    const q = `
+        INSERT INTO images
+        (url, uid)
+        VALUES
+        ($1, $2)
+        RETURNING url, uid;
+    `;
+
+    const params = [
+        data.url,
+        data.uid
+    ];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => console.log(err.message));
+};
+
 module.exports={
     createUser,
-    getUser
+    getUser,
+    getUserById,
+    saveImage
 };

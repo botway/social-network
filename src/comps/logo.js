@@ -1,12 +1,10 @@
 import React from 'react';
-import Logout from './logout';
+const imgUrl = "../assets/bones.png";
 
-const Logo = ({url})=>{
+const Logo = () => {
     return(
         <div>
-            <img src={url} alt="logo"/>
-            <br/>
-            <Logout />
+            <img src={imgUrl} alt="logo"/>
         </div>
     );
 };

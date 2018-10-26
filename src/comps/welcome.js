@@ -1,16 +1,17 @@
 import React from 'react';
 import Register from './register';
 import Login from './login';
+import Logo from './logo';
 import { HashRouter, Route } from 'react-router-dom';
 
 const desc = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
 const callToAction = "Sunt in culpa qui officia deserunt."
 
-const Welcome = ({logo}) => {
+const Welcome = () => {
     return (
         <div id="welcome">
-            <h1>Welcome to</h1>
-            <img src={logo} alt="logo"/>
+            <h1>WELCOME TO</h1>
+            <Logo />
             <p>{desc}</p>
             <h2>{callToAction}</h2>
             <HashRouter>
