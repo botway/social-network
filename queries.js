@@ -77,7 +77,7 @@ const saveImage = function(data) {
         (url, uid)
         VALUES
         ($1, $2)
-        RETURNING url, uid;
+        RETURNING url, uid, id;
     `;
 
     const params = [
@@ -93,9 +93,23 @@ const saveImage = function(data) {
         .catch(err => console.log(err.message));
 };
 
+const delImage = function(id) {
+    const q = `
+        DELETE FROM images
+        WHERE id =$1;
+    `;
+    return db
+        .query(q, [id])
+        .then(() => {
+            console.log("img was deleted from db");
+        })
+        .catch(err => console.log(err.message));
+};
+
 module.exports={
     createUser,
     getUser,
     getUserById,
-    saveImage
+    saveImage,
+    delImage
 };

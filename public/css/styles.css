@@ -3,6 +3,8 @@ html {
     background-color:aquamarine;
     font-family: monospace;
     font-size: 1.2em;
+    margin: 0;
+    padding: 0;
 }
 
 #container {
@@ -15,7 +17,56 @@ html {
     text-align: center;
     width: 70%;
 }
+.uploader{
+    /* display: inline-block; */
+    /* margin: 0 auto; */
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    border: black 1px solid;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    width: 40%;
+    /* background-color: antiquewhite; */
+    background-color: aquamarine;
+    z-index: 110;
+}
 
+.uploader h3{
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0.5em;
+}
+
+.uploader img{
+    width: 7em;
+    border-radius: 0.5em;
+}
+
+#file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+#file + label {
+    padding: 0.25em 0.75em;
+    border-radius: 0.25em;
+    font-weight: bold;
+    font-size: 0.85em;
+    background-color: black;
+    color: aquamarine;
+}
+#file + label {
+    cursor: pointer;
+}
+#file:focus + label,
+#file + label:hover {
+    color: yellow;
+}
 input{
     padding: 0.5em;
     margin-bottom: 0.25em;
@@ -35,12 +86,27 @@ button{
 }
 
 button:hover {
-    /* background-color:teal; */
     color: yellow;
     cursor: pointer;
+}
+
+button.close{
+    margin: 0;
+    position: absolute;
+    right: 0.75em;
+    /* float: right; */
 }
 
 #userPic {
     float: right;
     width: 5em;
+}
+.overlay{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    opacity: 0.5;
+    z-index: 100;
+    top: 0;
 }

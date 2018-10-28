@@ -6,11 +6,11 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
-const { upload } = require("./s3");
+const { upload, delImg } = require("./s3");
 const { s3Url } = require("./config.json");
 
 const { checkPassword, hashPassword } = require("./pass");
-const { createUser, getUser, saveImage, getUserById } = require("./queries");
+const { createUser, getUser, saveImage, getUserById, delImage } = require("./queries");
 
 app.use(compression());
 app.use(express.static("public"));
@@ -86,6 +86,15 @@ app.post("/upload", uploader.single("file"), upload, function(req, res) {
         .catch(err => {
             console.log(err.message);
         });
+});
+
+app.post("/deleteimg", delImg, (req, res) => {
+    delImage(req.body.id).then(() => {
+        console.log("image and comments were wiped out");
+        res.json({ deleted: true });
+    }).catch(err => {
+        console.log(err.message);
+    });
 });
 
 app.post("/logout", (req,res) => {
