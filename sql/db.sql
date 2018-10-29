@@ -20,3 +20,6 @@ INSERT INTO images (url, uid) VALUES (
     'http://s3.amazonaws.com/spicedling/quEXS59O1ZCb07vz5pyv_X4uuRcyUk3t.svg',
     28
 );
+
+ALTER TABLE registered_users
+ADD COLUMN bio VARCHAR(1500);

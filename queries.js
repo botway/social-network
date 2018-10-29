@@ -52,6 +52,7 @@ const getUserById = function(id) {
         SELECT first_name,
         last_name,
         registered_users.id,
+        bio,
         images.url AS imgUrl
         FROM registered_users
         FULL OUTER JOIN images
@@ -106,10 +107,32 @@ const delImage = function(id) {
         .catch(err => console.log(err.message));
 };
 
+const saveBioDB = function(data) {
+    const q = `
+        UPDATE registered_users
+        SET bio = $2
+        WHERE id = $1
+        RETURNING bio;
+    `;
+
+    const params = [
+        data.id,
+        data.bio
+    ];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => console.log(err.message));
+};
+
 module.exports={
     createUser,
     getUser,
     getUserById,
     saveImage,
-    delImage
+    delImage,
+    saveBioDB
 };

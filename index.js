@@ -10,7 +10,13 @@ const { upload, delImg } = require("./s3");
 const { s3Url } = require("./config.json");
 
 const { checkPassword, hashPassword } = require("./pass");
-const { createUser, getUser, saveImage, getUserById, delImage } = require("./queries");
+const { createUser,
+    getUser,
+    saveImage,
+    getUserById,
+    delImage,
+    saveBioDB
+} = require("./queries");
 
 app.use(compression());
 app.use(express.static("public"));
@@ -92,6 +98,15 @@ app.post("/deleteimg", delImg, (req, res) => {
     delImage(req.body.id).then(() => {
         console.log("image and comments were wiped out");
         res.json({ deleted: true });
+    }).catch(err => {
+        console.log(err.message);
+    });
+});
+
+app.post("/savebio", (req, res) => {
+    saveBioDB(req.body).then((results) => {
+        console.log("bio was saved");
+        res.json(results);
     }).catch(err => {
         console.log(err.message);
     });

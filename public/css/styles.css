@@ -110,3 +110,22 @@ button.close{
     z-index: 100;
     top: 0;
 }
+
+.profile{
+    border-top: 1px solid teal;
+    padding: 0.5em;
+}
+.profile img{
+    float: left;
+    width: 5em;
+    padding: 0.25em;
+    border: 1px solid teal;
+    border-radius: 0.5em;
+    background-color: antiquewhite;
+}
+
+.userInfo{
+    float: left;
+    display: inline-block;
+    padding-left: 0.5em;
+}
