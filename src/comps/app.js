@@ -15,6 +15,7 @@ export default class App extends React.Component {
         this.setImage = this.setImage.bind(this);
         this.setBio = this.setBio.bind(this);
         this.closeUploader = this.closeUploader.bind(this);
+        this.editBio = false;
     }
 
     componentDidMount(){
@@ -49,6 +50,7 @@ export default class App extends React.Component {
 
     setBio(bio){
         if(!bio){
+            this.editBio = true;
             this.setState({
                 bio: ""
             });
@@ -90,7 +92,7 @@ export default class App extends React.Component {
                 }
                 <BrowserRouter>
                     <div>
-                        {location.pathname != "/profile" && <Link to="/profile">My Profile</Link>}
+                        { location.pathname != "/profile" && <Link to="/profile">My Profile</Link> }
                         <Route
                             path="/profile"
                             render={() => (
@@ -100,6 +102,7 @@ export default class App extends React.Component {
                                     last_name = { this.state.last_name }
                                     imgurl = { this.state.imgurl }
                                     bio = { this.state.bio }
+                                    editBio = { this.editBio }
                                     setBio = { this.setBio }
                                     showUploader = { this.showUploader }
                                 />
