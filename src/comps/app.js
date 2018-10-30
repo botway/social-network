@@ -6,6 +6,7 @@ import Logout from './logout';
 import ProfilePic from './profilepic';
 import Uploader from './uploader';
 import Profile from './profile';
+import Opp from  './opp';
 
 export default class App extends React.Component {
     constructor(props){
@@ -19,7 +20,6 @@ export default class App extends React.Component {
     }
 
     componentDidMount(){
-        console.log("location", this.props);
         axios.get("/user").then( results => {
             this.setState({
                 ...results.data
@@ -92,9 +92,8 @@ export default class App extends React.Component {
                 }
                 <BrowserRouter>
                     <div>
-                        { location.pathname != "/profile" && <Link to="/profile">My Profile</Link> }
                         <Route
-                            path="/profile"
+                            exact path="/"
                             render={() => (
                                 <Profile
                                     id = { this.state.id }
@@ -106,6 +105,12 @@ export default class App extends React.Component {
                                     setBio = { this.setBio }
                                     showUploader = { this.showUploader }
                                 />
+                            )}
+                        />
+                        <Route
+                            path="/user/:id"
+                            render = { props => (
+                                <Opp {...props} key={ props.match.url }/>
                             )}
                         />
                     </div>

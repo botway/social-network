@@ -64,6 +64,19 @@ app.get("/user", async (req, res) => {
     res.json(data);
 });
 
+app.get("/userprofile", async (req, res) => {
+    if(req.session.user.id == req.query.id){
+        res.json({redirect:true});
+    } else {
+        const data = await getUserById(req.query.id);
+        if(!data){
+            res.json({redirect:true});
+        } else {
+            res.json(data);
+        }
+    }
+});
+
 app.get('*', function(req, res) {
     if(req.url == "/welcome" && req.session.user){
         res.redirect("/");

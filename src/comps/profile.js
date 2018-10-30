@@ -18,7 +18,9 @@ export default class Profile extends React.Component {
                     { this.props.bio != undefined
                         && <Bio bio={ this.props.bio }
                             setBio={ this.props.setBio }
-                            edit={ this.props.editBio } />
+                            edit={ this.props.editBio }
+                            editbtn={true}
+                        />
                         || <button onClick={ this.addBio }>Add bio</button>
                     }
                 </div>

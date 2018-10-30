@@ -43,7 +43,7 @@ export default class Bio extends React.Component {
             return(
                 <div>
                     <p>{this.props.bio}</p>
-                    <button onClick={this.editBio} >edit</button>
+                    {!this.props.noedit && <button onClick={this.editBio} >edit</button>}
                 </div>
             );
         }
