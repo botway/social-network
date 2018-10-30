@@ -199,8 +199,8 @@ const delFriendshipDB = function(id){
     `;
     return db
         .query(q, [id])
-        .then(results => {
-            return results.rows[0];
+        .then(() => {
+            return {deleted:true};
         })
         .catch(err => console.log(err.message));
 };

@@ -107,6 +107,29 @@ app.get("/getfriendship", async (req, res) => {
     }
 });
 
+app.post("/acceptfriendship", async (req, res) => {
+    const data = {
+        sender_id: req.session.user.id,
+        receiver_id: req.body.receiver_id
+    };
+    try {
+        const results = await updFriendshipDB(data);
+        res.json(results);
+    } catch (e){
+        console.log(e.error.message);
+    }
+});
+
+app.post("/endfriendship", async (req, res) => {
+    try {
+        const results = await delFriendshipDB(req.body.id);
+        res.json(results);
+    } catch (e){
+        console.log(e.error.message);
+    }
+});
+
+
 app.get('*', function(req, res) {
     if(req.url == "/welcome" && req.session.user){
         res.redirect("/");
