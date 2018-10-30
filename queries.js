@@ -128,11 +128,94 @@ const saveBioDB = function(data) {
         .catch(err => console.log(err.message));
 };
 
+const reqFriendshipDB = function(data){
+    const q = `
+        INSERT INTO friendships
+        (sender_id, receiver_id)
+        VALUES
+        ($1, $2)
+        RETURNING sender_id, receiver_id, accepted;
+    `;
+
+    const params = [
+        data.sender_id,
+        data.receiver_id
+    ];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => console.log(err.message));
+};
+
+const updFriendshipDB = function(data){
+    const q = `
+        UPDATE friendships
+        SET accepted = true
+        WHERE (receiver_id=$1 AND sender_id = $2)
+        OR (sender_id=$1 AND receiver_id = $2)
+        RETURNING receiver_id, sender_id, accepted;
+    `;
+
+    const params = [
+        data.sender_id,
+        data.receiver_id,
+    ];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => console.log(err.message));
+};
+
+const getFriendshipDB = function(data){
+    const q = `
+        SELECT * FROM friendships
+        WHERE (receiver_id=$1 AND sender_id = $2)
+        OR (sender_id=$1 AND receiver_id = $2);
+    `;
+
+    const params = [
+        data.sender_id,
+        data.receiver_id,
+    ];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => console.log(err.message));
+};
+
+const delFriendshipDB = function(id){
+    const q = `
+        DELETE FROM friendships
+        WHERE id = $1;
+    `;
+    return db
+        .query(q, [id])
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => console.log(err.message));
+};
+
+
+
 module.exports={
     createUser,
     getUser,
     getUserById,
     saveImage,
     delImage,
-    saveBioDB
+    saveBioDB,
+    reqFriendshipDB,
+    updFriendshipDB,
+    getFriendshipDB,
+    delFriendshipDB
 };

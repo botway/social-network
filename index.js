@@ -15,7 +15,11 @@ const { createUser,
     saveImage,
     getUserById,
     delImage,
-    saveBioDB
+    saveBioDB,
+    reqFriendshipDB,
+    updFriendshipDB,
+    getFriendshipDB,
+    delFriendshipDB
 } = require("./queries");
 
 app.use(compression());
@@ -74,6 +78,32 @@ app.get("/userprofile", async (req, res) => {
         } else {
             res.json(data);
         }
+    }
+});
+
+app.get("/reqfriendship", async (req, res) => {
+    const data = {
+        sender_id: req.session.user.id,
+        receiver_id: req.query.receiver_id
+    };
+    try {
+        const results = await reqFriendshipDB(data);
+        res.json(results);
+    } catch (e){
+        console.log(e.error.message);
+    }
+});
+
+app.get("/getfriendship", async (req, res) => {
+    const data = {
+        sender_id: req.session.user.id,
+        receiver_id: req.query.receiver_id
+    };
+    try {
+        const results = await getFriendshipDB(data);
+        res.json(results);
+    } catch (e){
+        console.log(e.error.message);
     }
 });
 

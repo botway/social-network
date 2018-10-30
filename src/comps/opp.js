@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from './axios';
-import Bio from './bio'
+import Bio from './bio';
+import Friendship from './friendship';
 
 export default class Opp extends React.Component {
     constructor(props){
@@ -23,7 +24,6 @@ export default class Opp extends React.Component {
             console.log(err.message);
         });
     }
-
     render(){
         return(
             <div className="profile">
@@ -31,6 +31,7 @@ export default class Opp extends React.Component {
                 <div className="userInfo">
                     <p>{this.state.first_name} {this.state.last_name}</p>
                     <Bio bio={ this.state.bio } noedit={true}/>
+                    <Friendship receiver_id = {this.props.match.params.id} />
                 </div>
             </div>
         );
