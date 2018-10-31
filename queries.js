@@ -134,7 +134,7 @@ const reqFriendshipDB = function(data){
         (sender_id, receiver_id)
         VALUES
         ($1, $2)
-        RETURNING sender_id, receiver_id, accepted;
+        RETURNING sender_id, receiver_id, accepted, id;
     `;
 
     const params = [
@@ -156,7 +156,7 @@ const updFriendshipDB = function(data){
         SET accepted = true
         WHERE (receiver_id=$1 AND sender_id = $2)
         OR (sender_id=$1 AND receiver_id = $2)
-        RETURNING receiver_id, sender_id, accepted;
+        RETURNING receiver_id, sender_id, accepted, id;
     `;
 
     const params = [

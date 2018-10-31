@@ -26,9 +26,9 @@ export default class Friendship extends React.Component {
                 status = "Accept friendship";
             } else if (!results.data.accepted &&
                 this.props.receiver_id == results.data.receiver_id ) {
-                status = "Friendship pending";
+                status = "Cancel friend request";
             } else {
-                status = "Cancel friendship";
+                status = "End friendship";
             }
             this.setState({
                 status : status
@@ -43,9 +43,10 @@ export default class Friendship extends React.Component {
                     receiver_id: this.props.receiver_id
                 }
             }).then(results => {
+                this.friendshipId = results.data.id;
                 if(!results.data.accepted){
                     this.setState({
-                        status : "Friendship pending"
+                        status : "Cancel friend request"
                     });
                 }
             }).catch(err => console.log(err.message));
@@ -59,7 +60,8 @@ export default class Friendship extends React.Component {
                     });
                 }
             }).catch(err => console.log(err.message));
-        } else if (this.state.status == "Cancel friendship"){
+        } else if (this.state.status == "End friendship" ||
+            this.state.status == "Cancel friend request"){
             axios.post("/endfriendship",{
                 id: this.friendshipId
             }).then(() => {
