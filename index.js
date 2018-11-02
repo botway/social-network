@@ -19,7 +19,8 @@ const { createUser,
     reqFriendshipDB,
     updFriendshipDB,
     getFriendshipDB,
-    delFriendshipDB
+    delFriendshipDB,
+    getFriendsAndWannabesDB
 } = require("./queries");
 
 app.use(compression());
@@ -107,6 +108,15 @@ app.get("/getfriendship", async (req, res) => {
     }
 });
 
+app.get("/getfriends", async (req, res) => {
+    try {
+        const results = await getFriendsAndWannabesDB(req.session.user.id);
+        res.json(results);
+    } catch (e){
+        console.log(e.error.message);
+    }
+});
+
 app.post("/acceptfriendship", async (req, res) => {
     const data = {
         sender_id: req.session.user.id,
@@ -121,8 +131,12 @@ app.post("/acceptfriendship", async (req, res) => {
 });
 
 app.post("/endfriendship", async (req, res) => {
+    const data = {
+        sender_id: req.session.user.id,
+        receiver_id: req.body.receiver_id
+    };
     try {
-        const results = await delFriendshipDB(req.body.id);
+        const results = await delFriendshipDB(data);
         res.json(results);
     } catch (e){
         console.log(e.error.message);

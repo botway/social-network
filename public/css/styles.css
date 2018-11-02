@@ -123,7 +123,19 @@ button.close{
     border-radius: 0.5em;
     background-color: antiquewhite;
 }
-
+.friend {
+    padding: 0.5em;
+    display: inline-block;
+}
+.friends img {
+    width: 4em;
+    margin-right: 0.25em;
+}
+.friends span{
+    vertical-align: top;
+    display: inline-block;
+    height: 100%;
+}
 .userInfo{
     float: left;
     display: inline-block;

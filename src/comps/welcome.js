@@ -11,7 +11,7 @@ const Welcome = () => {
     return (
         <div id="welcome">
             <h1>WELCOME TO</h1>
-            <Logo />
+            <Logo medium />
             <p>{desc}</p>
             <h2>{callToAction}</h2>
             <HashRouter>

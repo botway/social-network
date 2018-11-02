@@ -6,6 +6,7 @@ import Logout from './logout';
 import ProfilePic from './profilepic';
 import Uploader from './uploader';
 import Profile from './profile';
+import Friends from './friends';
 import Opp from  './opp';
 
 export default class App extends React.Component {
@@ -82,7 +83,7 @@ export default class App extends React.Component {
                     last_name = { this.state.last_name }
                     clickHandler ={ this.showUploader }
                 />
-                <Logo />
+                <Logo small />
                 <Logout />
                 { this.state.uploaderIsVisible &&
                     <Uploader onImgUploaded = { this.setImage }
@@ -113,6 +114,7 @@ export default class App extends React.Component {
                                 <Opp {...props} key={ props.match.url }/>
                             )}
                         />
+                        <Route history={this.history} path="/friends" component={Friends}/>
                     </div>
                 </BrowserRouter>
             </div>

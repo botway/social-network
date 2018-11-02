@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ProfilePic = function(props){
-    console.log(props);
     const img = props.imgurl || "../assets/farmer.svg";
     return (
         <img id="userPic"

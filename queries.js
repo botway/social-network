@@ -192,15 +192,47 @@ const getFriendshipDB = function(data){
         .catch(err => console.log(err.message));
 };
 
-const delFriendshipDB = function(id){
+const getFriendsAndWannabesDB = function(id) {
     const q = `
-        DELETE FROM friendships
-        WHERE id = $1;
-    `;
+    SELECT registered_users.id, first_name, last_name, accepted, images.url as image
+    FROM friendships
+    JOIN registered_users
+    ON (accepted = false AND receiver_id = $1 AND sender_id = registered_users.id)
+    OR (accepted = true AND receiver_id = $1 AND sender_id = registered_users.id)
+    OR (accepted = true AND sender_id = $1 AND receiver_id = registered_users.id)
+    FULL OUTER JOIN images
+    ON registered_users.id = images.uid
+    WHERE registered_users.id IS NOT null
+    ORDER BY images.id DESC;
+`;
+
     return db
         .query(q, [id])
+        .then(results => {
+            console.log(results.rows);
+            return results.rows;
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
+};
+
+const delFriendshipDB = function(data){
+    const q = `
+        DELETE FROM friendships
+        WHERE (receiver_id=$1 AND sender_id = $2)
+        OR (sender_id=$1 AND receiver_id = $2);
+    `;
+
+    const params = [
+        data.sender_id,
+        data.receiver_id,
+    ];
+
+    return db
+        .query(q, params)
         .then(() => {
-            return {deleted:true};
+            return { deleted:true };
         })
         .catch(err => console.log(err.message));
 };
@@ -217,5 +249,6 @@ module.exports={
     reqFriendshipDB,
     updFriendshipDB,
     getFriendshipDB,
-    delFriendshipDB
+    delFriendshipDB,
+    getFriendsAndWannabesDB
 };

@@ -4,7 +4,6 @@ import axios from './axios';
 export default class Friendship extends React.Component {
     constructor(props){
         super(props);
-        this.friendshipId;
         this.state = {
             status: "Request friendship"
         };
@@ -43,7 +42,6 @@ export default class Friendship extends React.Component {
                     receiver_id: this.props.receiver_id
                 }
             }).then(results => {
-                this.friendshipId = results.data.id;
                 if(!results.data.accepted){
                     this.setState({
                         status : "Cancel friend request"
@@ -58,12 +56,17 @@ export default class Friendship extends React.Component {
                     this.setState({
                         status : "You are friends"
                     });
+                    setTimeout(()=>{
+                        this.setState({
+                            status : "End friendship"
+                        });
+                    },800)
                 }
             }).catch(err => console.log(err.message));
         } else if (this.state.status == "End friendship" ||
             this.state.status == "Cancel friend request"){
             axios.post("/endfriendship",{
-                id: this.friendshipId
+                receiver_id: this.props.receiver_id
             }).then(() => {
                 this.setState({
                     status : "Request friendship"
