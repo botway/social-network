@@ -9,6 +9,9 @@ const path = require("path");
 const { upload, delImg } = require("./s3");
 const { s3Url } = require("./config.json");
 
+const server = require('http').Server(app);
+const io = require('socket.io')(server, { origins: 'localhost:8080' });
+
 const { checkPassword, hashPassword } = require("./pass");
 const { createUser,
     getUser,
@@ -20,7 +23,8 @@ const { createUser,
     updFriendshipDB,
     getFriendshipDB,
     delFriendshipDB,
-    getFriendsAndWannabesDB
+    getFriendsAndWannabesDB,
+    getUsersByIdsDB
 } = require("./queries");
 
 app.use(compression());
@@ -28,12 +32,16 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(
-    cookieSession({
-        secret: `I'm always angry.`,
-        maxAge: 1000 * 60 * 60 * 24 * 14
-    })
-);
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90
+});
+
+app.use(cookieSessionMiddleware);
+
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 if (process.env.NODE_ENV != 'production') {
     app.use(
@@ -157,7 +165,6 @@ app.get('*', function(req, res) {
 });
 
 app.post("/upload", uploader.single("file"), upload, function(req, res) {
-    console.log(req.body, req.file);
     const imgUrl = s3Url + req.file.filename;
 
     const data = {
@@ -248,6 +255,52 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.listen(8080, function() {
-    console.log("I'm listening.");
+server.listen(8080, function() {
+    console.log("Listening on 8080.");
+});
+
+/////////////// socket.io
+
+let onlineUsers = [];
+
+io.on('connection', function(socket) {
+    if (!socket.request.session || !socket.request.session.user) {
+        return socket.disconnect(true);
+    }
+
+    onlineUsers.push({
+        userId: socket.request.session.user.id,
+        socketId: socket.id
+    });
+
+    let ids = onlineUsers.map(user => {
+        return user.userId;
+    });
+
+    getUsersByIdsDB(ids).then(results => {
+        socket.emit("onlineUsers", results);
+    });
+
+    const joinedUser = {
+        ...socket.request.session.user
+    };
+    socket.broadcast.emit("userJoined", joinedUser);
+    //
+    socket.on('disconnect', function() {
+        console.log("left", socket.id,);
+        // onlineUsers.filter(user => {
+        //     ( user.socketID != socket.id )
+        // })
+        // console.log("onl", onlineUsers);
+        // if (onlineUsers.indexOf({
+        //     userId: socket.request.session.user.id}) == -1
+        // ){
+        //     console.log("the user has left");
+        // }
+        // const data = {
+        //     userId: socket.request.session.user.id,
+        //     socketId: socket.id
+        // }
+        // io.sockets.emit('userLeft', data);
+    });
 });

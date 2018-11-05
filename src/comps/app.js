@@ -2,12 +2,13 @@ import React from 'react';
 import axios from './axios';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Logo from './logo';
-import Logout from './logout';
+import Nav from './nav';
 import ProfilePic from './profilepic';
 import Uploader from './uploader';
 import Profile from './profile';
 import Friends from './friends';
 import Opp from  './opp';
+import Onliners from  './onliners';
 
 export default class App extends React.Component {
     constructor(props){
@@ -75,49 +76,55 @@ export default class App extends React.Component {
             return null;
         }
         return(
-            <div>
-                <ProfilePic
-                    imgurl = { this.state.imgurl }
-                    id = { this.state.id }
-                    first_name = { this.state.first_name }
-                    last_name = { this.state.last_name }
-                    clickHandler ={ this.showUploader }
-                />
-                <Logo small />
-                <Logout />
-                { this.state.uploaderIsVisible &&
+            <BrowserRouter>
+                <div id="container">
+                    <ProfilePic
+                        imgurl = { this.state.imgurl }
+                        id = { this.state.id }
+                        first_name = { this.state.first_name }
+                        last_name = { this.state.last_name }
+                        clickHandler ={ this.showUploader }
+                    />
+                    <Logo small />
+                    <Nav />
+                    { this.state.uploaderIsVisible &&
                     <Uploader onImgUploaded = { this.setImage }
                         userId = { this.state.id }
                         onClose = { this.closeUploader }
                     />
-                }
-                <BrowserRouter>
-                    <div>
-                        <Route
-                            exact path="/"
-                            render={() => (
-                                <Profile
-                                    id = { this.state.id }
-                                    first_name = { this.state.first_name }
-                                    last_name = { this.state.last_name }
-                                    imgurl = { this.state.imgurl }
-                                    bio = { this.state.bio }
-                                    editBio = { this.editBio }
-                                    setBio = { this.setBio }
-                                    showUploader = { this.showUploader }
-                                />
-                            )}
-                        />
-                        <Route
-                            path="/user/:id"
-                            render = { props => (
-                                <Opp {...props} key={ props.match.url }/>
-                            )}
-                        />
-                        <Route history={this.history} path="/friends" component={Friends}/>
-                    </div>
-                </BrowserRouter>
-            </div>
+                    }
+                    <Route
+                        exact path="/"
+                        render={() => (
+                            <Profile
+                                id = { this.state.id }
+                                first_name = { this.state.first_name }
+                                last_name = { this.state.last_name }
+                                imgurl = { this.state.imgurl }
+                                bio = { this.state.bio }
+                                editBio = { this.editBio }
+                                setBio = { this.setBio }
+                                showUploader = { this.showUploader }
+                            />
+                        )}
+                    />
+                    <Route
+                        path="/user/:id"
+                        render = { props => (
+                            <Opp {...props} key={ props.match.url }/>
+                        )}
+                    />
+                    <Route history={this.history} path="/friends" component={Friends}/>
+                    <Route
+                        path="/online"
+                        render={() => (
+                            <Onliners
+
+                            />
+                        )}
+                    />
+                </div>
+            </BrowserRouter>
         );
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import {
     receiveFriendsAndWannabes,
     accept,
@@ -11,10 +11,6 @@ import {
 class Friends extends React.Component {
     componentDidMount(){
         this.props.dispatch(receiveFriendsAndWannabes());
-    }
-    visitProfile(e){
-        // this.props.history.push(`/user/:'${id}`)
-        console.log("vis", e.target);
     }
     render(){
         const { friends, wannabes, dispatch } = this.props;
@@ -50,18 +46,12 @@ class Friends extends React.Component {
 }
 
 const mapStateToProps = state => {
-    if(state){
-        return {
-            friends: state.friendsAndWannabes.filter(
-                f => f.accepted
-            ),
-            wannabes: state.friendsAndWannabes.filter(
-                w => !w.accepted
-            )
-        };
-    } else {
-        return {};
-    }
+    return {
+        friends: state.friendsAndWannabes &&
+            state.friendsAndWannabes.filter ( f => f.accepted ),
+        wannabes: state.friendsAndWannabes &&
+            state.friendsAndWannabes.filter( w => !w.accepted)
+    };
 };
 
 export default connect(mapStateToProps)(Friends);

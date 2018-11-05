@@ -49,10 +49,7 @@ const getUser = function(email) {
 
 const getUserById = function(id) {
     const q = `
-        SELECT first_name,
-        last_name,
-        registered_users.id,
-        bio,
+        SELECT first_name, last_name, registered_users.id, bio,
         images.url AS imgUrl
         FROM registered_users
         FULL OUTER JOIN images
@@ -209,7 +206,6 @@ const getFriendsAndWannabesDB = function(id) {
     return db
         .query(q, [id])
         .then(results => {
-            console.log(results.rows);
             return results.rows;
         })
         .catch(err => {
@@ -237,7 +233,19 @@ const delFriendshipDB = function(data){
         .catch(err => console.log(err.message));
 };
 
-
+function getUsersByIdsDB(arrayOfIds) {
+    const q = `
+        SELECT id, first_name, last_name
+        FROM registered_users
+        WHERE id = ANY($1)
+    `;
+    return db
+        .query(q, [arrayOfIds])
+        .then( results => {
+            return results.rows;
+        })
+        .catch(err => console.log(err.message));
+}
 
 module.exports={
     createUser,
@@ -250,5 +258,6 @@ module.exports={
     updFriendshipDB,
     getFriendshipDB,
     delFriendshipDB,
-    getFriendsAndWannabesDB
+    getFriendsAndWannabesDB,
+    getUsersByIdsDB
 };

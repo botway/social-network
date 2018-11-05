@@ -14,12 +14,11 @@ const Logo = (props) => {
         size = "5em";
     }
     const style = {
-        width: size
+        width: size,
+        display: "inline-block"
     };
     return(
-        <div>
-            <img style={style} src={imgUrl} alt="logo"/>
-        </div>
+        <img style={style} src={imgUrl} alt="logo"/>
     );
 };
 

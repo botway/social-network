@@ -13,7 +13,7 @@ export async function accept(id) {
     await axios.post('/acceptfriendship', { receiver_id: id });
     return {
         type: 'ACCEPT_FRIEND_REQUEST',
-        id: id
+        id
     };
 }
 
@@ -21,6 +21,27 @@ export async function unfriend(id) {
     await axios.post('/endfriendship', { receiver_id: id });
     return {
         type: 'UNFRIEND',
-        id: id
+        id
+    };
+}
+
+export function onlineUsers (users) {
+    return {
+        type: 'ONLINE_USERS',
+        onlineUsers: users
+    };
+}
+
+export function userJoined (user) {
+    return {
+        type: 'USER_JOINED',
+        user
+    };
+}
+
+export function userLeft (user) {
+    return {
+        type: 'USER_LEFT',
+        user
     };
 }
