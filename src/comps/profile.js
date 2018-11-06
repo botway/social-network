@@ -12,8 +12,9 @@ export default class Profile extends React.Component {
     render(){
         return(
             <div className="profile">
+                <h3>The Profile</h3>
                 <img src={this.props.imgurl || "../assets/farmer.svg"} onClick={this.props.showUploader}/>
-                <h3>{this.props.first_name} {this.props.last_name}</h3>
+                <h4>{this.props.first_name} {this.props.last_name}</h4>
                 { this.props.bio != undefined
                     && <Bio bio={ this.props.bio }
                         setBio={ this.props.setBio }

@@ -287,11 +287,11 @@ io.on('connection', function(socket) {
 
     joined == -1 && socket.broadcast.emit("userJoined", currentUser);
     socket.emit("storedChatMessages", chatMessages);
-    socket.on("chatMessage", data => {
-        const message = {
-            user: currentUser,
-            message: data
-        };
+    socket.on("chatMessage", message => {
+        // const message = {
+        //     user: currentUser,
+        //     message: data
+        // };
         chatMessages.push(message);
         socket.broadcast.emit("newChatMessage", message);
     });

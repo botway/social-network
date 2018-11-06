@@ -8,44 +8,46 @@ class Chat extends React.Component {
         super(props);
         this.state = {};
         this.onKeyPressed = this.onKeyPressed.bind(this);
+        this.user = {
+            id: this.props.id,
+            first_name: this.props.first_name,
+            last_name: this.props.last_name,
+            image: this.props.imgurl
+        };
     }
 
     componentDidMount(){
     }
 
     componentDidUpdate(){
-        ///scrolll stuff
+        this.chat.scrollTop = this.chat.scrollHeight - this.chat.clientHeight;
     }
 
     onKeyPressed(e){
         if (e.which == 13 && !e.shiftKey){
-            this.props.dispatch(newChatMessage({
-                user: {
-                    id: this.props.id,
-                    first_name: this.props.first_name,
-                    last_name: this.props.last_name,
-                    image: this.props.imgurl
-                },
+            const data = {
+                user: this.user,
                 message: e.target.value
-            }
-            ));
-            sendChatMessage(e.target.value);
+            };
+            this.props.dispatch(newChatMessage(data));
+            sendChatMessage(data);
             e.target.value = null;
             e.preventDefault();
         }
     }
     render(){
         const { chatMessages } = this.props;
-        // if (!chatMessages) {
-        //     return null;
-        // }
         return(
             <div className="chat">
                 <h3>The Chat</h3>
-                <div className="chatMessages">
+                <div className="chatMessages" ref={elem => (this.chat = elem)}>
                     { chatMessages &&
-                        chatMessages.map( m => (
-                            <p key={m.user.id + m.message}>{m.message}</p>
+                        chatMessages.map( (m,index) => (
+                            <div className="message" key={index}>
+                                <img src={m.user.image} alt={m.user.last_name}/>
+                                <strong>{m.user.first_name} {m.user.last_name}: </strong>
+                                <span>{m.message}</span>
+                            </div>
                         ))
                     }
                 </div>
