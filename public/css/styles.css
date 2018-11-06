@@ -165,3 +165,9 @@ button.close{
     display: inline-block;
     height: 100%;
 }
+
+.chatMessages {
+    height: 10em;
+    background-color:antiquewhite;
+    border: rosybrown 1px solid;
+}

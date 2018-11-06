@@ -53,5 +53,20 @@ export default function( state = {}, action ) {
             )
         };
     }
+    if (action.type == 'STORED_CHAT_MESSAGES'){
+        state = {
+            ...state,
+            chatMessages: action.chatMessages
+        };
+    }
+    if (action.type == 'NEW_CHAT_MESSAGE'){
+        console.log(action.message);
+        state = {
+            ...state,
+            chatMessages: state.chatMessages.concat(
+                action.message
+            )
+        };
+    }
     return state;
 }

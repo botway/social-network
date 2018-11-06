@@ -262,6 +262,7 @@ server.listen(8080, function() {
 /////////////// socket.io
 
 let onlineUsers = [];
+let chatMessages = [];
 io.on('connection', function(socket) {
     if (!socket.request.session || !socket.request.session.user) {
         return socket.disconnect(true);
@@ -285,9 +286,18 @@ io.on('connection', function(socket) {
     });
 
     joined == -1 && socket.broadcast.emit("userJoined", currentUser);
+    socket.emit("storedChatMessages", chatMessages);
+    socket.on("chatMessage", data => {
+        const message = {
+            user: currentUser,
+            message: data
+        };
+        chatMessages.push(message);
+        socket.broadcast.emit("newChatMessage", message);
+    });
 
     socket.on('disconnect', function() {
-        onlineUsers = onlineUsers.filter( user => (user.socketId != socket.id));
+        onlineUsers = onlineUsers.filter(user => (user.socketId != socket.id));
         let left = onlineUsers.findIndex(u => u.userId == currentUser.id);
         left == -1 && io.sockets.emit('userLeft', currentUser);
     });

@@ -1,16 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {
-    onlineUsers,
-    userJoined,
-    userLeft
-} from '../actions';
 
 class Onliners extends React.Component {
 
     render(){
-        const { onliners, dispatch } = this.props;
+        const { onliners} = this.props;
         if (!onliners) {
             return null;
         }

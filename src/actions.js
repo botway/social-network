@@ -40,9 +40,22 @@ export function userJoined (user) {
 }
 
 export function userLeft (user) {
-
     return {
         type: 'USER_LEFT',
         user
+    };
+}
+
+export function storedChatMessages (data) {
+    return {
+        type: 'STORED_CHAT_MESSAGES',
+        chatMessages: data
+    };
+}
+
+export function newChatMessage (data) {
+    return {
+        type: 'NEW_CHAT_MESSAGE',
+        message: data
     };
 }

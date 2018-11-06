@@ -9,6 +9,7 @@ import Profile from './profile';
 import Friends from './friends';
 import Opp from  './opp';
 import Onliners from  './onliners';
+import Chat from  './chat';
 
 export default class App extends React.Component {
     constructor(props){
@@ -115,14 +116,15 @@ export default class App extends React.Component {
                         )}
                     />
                     <Route history={this.history} path="/friends" component={Friends}/>
-                    <Route
-                        path="/online"
-                        render={() => (
-                            <Onliners
-
-                            />
-                        )}
-                    />
+                    <Route path="/online" component={Onliners}/>
+                    <Route path="/chat" render={()=>(
+                        <Chat
+                            id = { this.state.id }
+                            first_name = { this.state.first_name }
+                            last_name = { this.state.last_name }
+                            imgurl = { this.state.imgurl }
+                        />
+                    )} />
                 </div>
             </BrowserRouter>
         );

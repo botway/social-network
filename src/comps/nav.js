@@ -33,7 +33,12 @@ const Nav = () => {
             <button formAction="/online"
                 formMethod="get"
                 style={btnStyle}
-                type="submit">ONLINE
+                type="submit">ONLINERS
+            </button>
+            <button formAction="/chat"
+                formMethod="get"
+                style={btnStyle}
+                type="submit">CHAT
             </button>
         </form>
     );
