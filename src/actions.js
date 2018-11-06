@@ -40,6 +40,7 @@ export function userJoined (user) {
 }
 
 export function userLeft (user) {
+
     return {
         type: 'USER_LEFT',
         user

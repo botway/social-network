@@ -262,11 +262,15 @@ server.listen(8080, function() {
 /////////////// socket.io
 
 let onlineUsers = [];
-
 io.on('connection', function(socket) {
     if (!socket.request.session || !socket.request.session.user) {
         return socket.disconnect(true);
     }
+    const currentUser = {
+        ...socket.request.session.user
+    };
+
+    let joined = onlineUsers.findIndex(u => u.userId == currentUser.id);
 
     onlineUsers.push({
         userId: socket.request.session.user.id,
@@ -276,31 +280,15 @@ io.on('connection', function(socket) {
     let ids = onlineUsers.map(user => {
         return user.userId;
     });
-
     getUsersByIdsDB(ids).then(results => {
         socket.emit("onlineUsers", results);
     });
 
-    const joinedUser = {
-        ...socket.request.session.user
-    };
-    socket.broadcast.emit("userJoined", joinedUser);
-    //
+    joined == -1 && socket.broadcast.emit("userJoined", currentUser);
+
     socket.on('disconnect', function() {
-        console.log("left", socket.id,);
-        // onlineUsers.filter(user => {
-        //     ( user.socketID != socket.id )
-        // })
-        // console.log("onl", onlineUsers);
-        // if (onlineUsers.indexOf({
-        //     userId: socket.request.session.user.id}) == -1
-        // ){
-        //     console.log("the user has left");
-        // }
-        // const data = {
-        //     userId: socket.request.session.user.id,
-        //     socketId: socket.id
-        // }
-        // io.sockets.emit('userLeft', data);
+        onlineUsers = onlineUsers.filter( user => (user.socketId != socket.id));
+        let left = onlineUsers.findIndex(u => u.userId == currentUser.id);
+        left == -1 && io.sockets.emit('userLeft', currentUser);
     });
 });
