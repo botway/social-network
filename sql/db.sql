@@ -16,6 +16,17 @@ CREATE TABLE images(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE chat(
+    id SERIAL PRIMARY KEY,
+    message VARCHAR(9999) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    image VARCHAR(300),
+    uid INT NOT NULL REFERENCES registered_users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
 INSERT INTO images (url, uid) VALUES (
     'http://s3.amazonaws.com/spicedling/quEXS59O1ZCb07vz5pyv_X4uuRcyUk3t.svg',
     28

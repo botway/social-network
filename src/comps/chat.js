@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { sendChatMessage } from '../socket';
 import { newChatMessage } from '../actions';
-
+import UserPic from './userpic'
+//<img src={m.image} alt={m.last_name}/>
 class Chat extends React.Component {
     constructor(props){
         super(props);
@@ -26,7 +27,7 @@ class Chat extends React.Component {
     onKeyPressed(e){
         if (e.which == 13 && !e.shiftKey){
             const data = {
-                user: this.user,
+                ...this.user,
                 message: e.target.value
             };
             this.props.dispatch(newChatMessage(data));
@@ -44,8 +45,8 @@ class Chat extends React.Component {
                     { chatMessages &&
                         chatMessages.map( (m,index) => (
                             <div className="message" key={index}>
-                                <img src={m.user.image} alt={m.user.last_name}/>
-                                <strong>{m.user.first_name} {m.user.last_name}: </strong>
+                                <UserPic imgurl={m.image} first_name={m.first_name} last_name={m.last_name}/>
+                                <strong>{m.first_name} {m.last_name}: </strong>
                                 <span>{m.message}</span>
                             </div>
                         ))

@@ -24,7 +24,9 @@ const { createUser,
     getFriendshipDB,
     delFriendshipDB,
     getFriendsAndWannabesDB,
-    getUsersByIdsDB
+    getUsersByIdsDB,
+    getChatMessages,
+    saveChatMessage
 } = require("./queries");
 
 app.use(compression());
@@ -262,7 +264,6 @@ server.listen(8080, function() {
 /////////////// socket.io
 
 let onlineUsers = [];
-let chatMessages = [];
 io.on('connection', function(socket) {
     if (!socket.request.session || !socket.request.session.user) {
         return socket.disconnect(true);
@@ -286,14 +287,23 @@ io.on('connection', function(socket) {
     });
 
     joined == -1 && socket.broadcast.emit("userJoined", currentUser);
-    socket.emit("storedChatMessages", chatMessages);
-    socket.on("chatMessage", message => {
-        // const message = {
-        //     user: currentUser,
-        //     message: data
-        // };
-        chatMessages.push(message);
+
+    (async function getMessages () {
+        try{
+            let results = await getChatMessages();
+            socket.emit("storedChatMessages", results);
+        }catch(e){
+            console.log(e.error.message);
+        }
+    })();
+
+    socket.on("chatMessage", async message => {
         socket.broadcast.emit("newChatMessage", message);
+        try{
+            await saveChatMessage(message);
+        }catch(e){
+            console.log(e.error.message);
+        }
     });
 
     socket.on('disconnect', function() {

@@ -1,13 +1,23 @@
 import React from 'react';
+import UserPic from './userpic';
 
 const ProfilePic = function(props){
-    const img = props.imgurl || "../assets/farmer.svg";
+    let pos;
+    if(props.left){
+        pos = "left";
+    } else if (props.right) {
+        pos = "right";
+    }
+
+    const style = {
+        float: pos
+    };
     return (
-        <img id="userPic"
+        <div className="profilePic"
             onClick={ props.clickHandler }
-            src={ img }
-            alt={`${props.first_name} ${props.last_name}`}
-        />
+            style={style} >
+            <UserPic {...props} />
+        </div>
     );
 };
 

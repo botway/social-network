@@ -1,5 +1,6 @@
 import React from 'react';
 import Bio from './bio';
+import ProfilePic from './profilepic'
 
 export default class Profile extends React.Component {
     constructor(props){
@@ -13,7 +14,7 @@ export default class Profile extends React.Component {
         return(
             <div className="profile">
                 <h3>The Profile</h3>
-                <img src={this.props.imgurl || "../assets/farmer.svg"} onClick={this.props.showUploader}/>
+                <ProfilePic left {...this.props} clickHandler={this.props.showUploader} />
                 <h4>{this.props.first_name} {this.props.last_name}</h4>
                 { this.props.bio != undefined
                     && <Bio bio={ this.props.bio }

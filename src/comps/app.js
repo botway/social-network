@@ -79,7 +79,7 @@ export default class App extends React.Component {
         return(
             <BrowserRouter>
                 <div id="container">
-                    <ProfilePic
+                    <ProfilePic right
                         imgurl = { this.state.imgurl }
                         id = { this.state.id }
                         first_name = { this.state.first_name }

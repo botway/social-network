@@ -108,9 +108,7 @@ button.close{
     /* float: right; */
 }
 
-#userPic {
-    float: right;
-    width: 5em;
+.profilePic {
 }
 .overlay{
     background-color: black;
@@ -120,6 +118,7 @@ button.close{
     opacity: 0.5;
     z-index: 100;
     top: 0;
+    left: 0;
 }
 
 .profile{
@@ -188,17 +187,17 @@ button.close{
 
 .message img{
     float: left;
-    width: 2.3em;
+    width: 2.8em;
     padding: 0.15em;
     border-radius: 0.3em;
     border: 1px solid black;
     background-color: white;
     margin-right: 0.5em;
-    transform: translateY(6px);
+    transform: translateY(3px);
 }
 .message span{
     vertical-align: top;
-    font-size: 0.9em;
+    /* display: block; */
 }
 textarea {
     margin-top: 0.3em;

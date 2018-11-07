@@ -246,7 +246,44 @@ function getUsersByIdsDB(arrayOfIds) {
         })
         .catch(err => console.log(err.message));
 }
+function getChatMessages (){
+    const q = `
+        SELECT * FROM chat
+        LIMIT 50;
+    `;
+    return db
+        .query(q)
+        .then( results => {
+            return results.rows;
+        })
+        .catch(err => console.log(err.message));
 
+}
+function saveChatMessage(data){
+    const q = `
+        INSERT INTO chat
+        (uid, first_name, last_name, image, message)
+        VALUES
+        ($1, $2, $3, $4, $5)
+        RETURNING message, first_name, last_name, uid;
+    `;
+
+    const params = [
+        data.id,
+        data.first_name,
+        data.last_name,
+        data.image,
+        data.message
+    ];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            console.log("save", results.rows);
+            return results.rows[0];
+        })
+        .catch(err => console.log(err.message));
+}
 module.exports={
     createUser,
     getUser,
@@ -259,5 +296,7 @@ module.exports={
     getFriendshipDB,
     delFriendshipDB,
     getFriendsAndWannabesDB,
-    getUsersByIdsDB
+    getUsersByIdsDB,
+    getChatMessages,
+    saveChatMessage
 };
