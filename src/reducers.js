@@ -1,6 +1,5 @@
 export default function( state = {}, action ) {
     if (action.type == 'RECEIVE_FRIENDS_AND_WANNABES'){
-        console.log("st", state);
         state = {
             ...state,
             friendsAndWannabes: action.friendsAndWannabes
@@ -60,12 +59,17 @@ export default function( state = {}, action ) {
         };
     }
     if (action.type == 'NEW_CHAT_MESSAGE'){
-        console.log(action.message);
         state = {
             ...state,
             chatMessages: state.chatMessages.concat(
                 action.message
             )
+        };
+    }
+    if (action.type == 'SEARCH_USERS'){
+        state = {
+            ...state,
+            searchResults: action.val
         };
     }
     return state;

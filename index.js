@@ -26,7 +26,8 @@ const { createUser,
     getFriendsAndWannabesDB,
     getUsersByIdsDB,
     getChatMessages,
-    saveChatMessage
+    saveChatMessage,
+    searchUsersDB
 } = require("./queries");
 
 app.use(compression());
@@ -72,6 +73,12 @@ const uploader = multer({
     limits: {
         fileSize: 2097152
     }
+});
+
+app.get("/searchusers", async (req, res) => {
+    console.log(req.query.searchStr);
+    const data = await searchUsersDB(req.query.searchStr);
+    res.json(data);
 });
 
 app.get("/user", async (req, res) => {

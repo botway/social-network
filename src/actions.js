@@ -1,4 +1,7 @@
 import axios from './comps/axios';
+const CancelToken = axios.CancelToken;
+// const source = CancelToken.source();
+// console.log(source);
 
 export async function receiveFriendsAndWannabes() {
     const { data } = await axios.get('/getfriends');
@@ -9,7 +12,6 @@ export async function receiveFriendsAndWannabes() {
 }
 
 export async function accept(id) {
-    console.log("accept", id);
     await axios.post('/acceptfriendship', { receiver_id: id });
     return {
         type: 'ACCEPT_FRIEND_REQUEST',
@@ -58,4 +60,17 @@ export function newChatMessage (data) {
         type: 'NEW_CHAT_MESSAGE',
         message: data
     };
+}
+
+export async function searchUsers (string) {
+    let results = {};
+    if(string){
+        results = await axios.get('/searchusers', {params:
+            {searchStr: string.toLowerCase()}});
+    }
+    return {
+        type: 'SEARCH_USERS',
+        val: results.data
+    };
+
 }

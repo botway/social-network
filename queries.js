@@ -284,6 +284,27 @@ function saveChatMessage(data){
         })
         .catch(err => console.log(err.message));
 }
+
+const searchUsersDB = function(str) {
+    console.log(str);
+    const q = `
+    SELECT * FROM registered_users
+    WHERE LOWER(first_name)::text LIKE $1
+    OR LOWER(last_name)::text LIKE $1;
+`;
+    const params = [
+        "%" + str +"%"
+    ];
+    return db
+        .query(q, params)
+        .then(results => {
+            console.log(results.rows);
+            return results.rows;
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
+};
 module.exports={
     createUser,
     getUser,
@@ -298,5 +319,6 @@ module.exports={
     getFriendsAndWannabesDB,
     getUsersByIdsDB,
     getChatMessages,
-    saveChatMessage
+    saveChatMessage,
+    searchUsersDB
 };

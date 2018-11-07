@@ -10,6 +10,7 @@ import Friends from './friends';
 import Opp from  './opp';
 import Onliners from  './onliners';
 import Chat from  './chat';
+import Search from  './search';
 
 export default class App extends React.Component {
     constructor(props){
@@ -88,6 +89,7 @@ export default class App extends React.Component {
                     />
                     <Logo small />
                     <Nav />
+                    <Search />
                     { this.state.uploaderIsVisible &&
                     <Uploader onImgUploaded = { this.setImage }
                         userId = { this.state.id }
