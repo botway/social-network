@@ -1,7 +1,6 @@
 import axios from './comps/axios';
-const CancelToken = axios.CancelToken;
-// const source = CancelToken.source();
-// console.log(source);
+import {CancelToken} from './comps/axios';
+let cancel;
 
 export async function receiveFriendsAndWannabes() {
     const { data } = await axios.get('/getfriends');
@@ -62,15 +61,46 @@ export function newChatMessage (data) {
     };
 }
 
-export async function searchUsers (string) {
-    let results = {};
-    if(string){
-        results = await axios.get('/searchusers', {params:
-            {searchStr: string.toLowerCase()}});
+export function searchUsers (string) {
+    let blank = {};
+    if (cancel != undefined) {
+        cancel();
+        console.log("req was canceled");
     }
-    return {
-        type: 'SEARCH_USERS',
-        val: results.data
-    };
+    if(string) return axios.get("/searchusers", {
+        cancelToken: new CancelToken(function executor(c) {
+            cancel = c;
+        }),
+        params: {
+            searchStr: string.toLowerCase()
+        }
+    })
+        .then(response => {
+            return {
+                type: 'SEARCH_USERS',
+                val: response.data
+            };
+        })
+        .catch(error => {
+            const result = error.response;
+            return Promise.reject(result);
+        });
 
+    if(!string) return {
+        type: 'SEARCH_USERS',
+        val: blank.data
+    };
 }
+
+// no cancelation
+// export async function searchUsers (string) {
+//     let results = {};
+//     if(string){
+//         results = await axios.get('/searchusers', {params:
+//             {searchStr: string.toLowerCase()}});
+//     }
+//     return {
+//         type: 'SEARCH_USERS',
+//         val: results.data
+//     };
+// }
