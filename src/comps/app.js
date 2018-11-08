@@ -11,6 +11,7 @@ import Opp from  './opp';
 import Onliners from  './onliners';
 import Chat from  './chat';
 import Search from  './search';
+import Home from  './home';
 
 export default class App extends React.Component {
     constructor(props){
@@ -26,7 +27,8 @@ export default class App extends React.Component {
     componentDidMount(){
         axios.get("/user").then( results => {
             this.setState({
-                ...results.data
+                ...results.data,
+                user: {...results.data}
             });
         }).catch(err => {
             console.log(err.message);
@@ -91,13 +93,18 @@ export default class App extends React.Component {
                     <Nav />
                     <Search />
                     { this.state.uploaderIsVisible &&
-                    <Uploader onImgUploaded = { this.setImage }
-                        userId = { this.state.id }
-                        onClose = { this.closeUploader }
-                    />
+                        <Uploader onImgUploaded = { this.setImage }
+                            userId = { this.state.id }
+                            onClose = { this.closeUploader }
+                        />
                     }
+                    <Route exact path="/"
+                        render={() =>(
+                            <Home user={this.state.user}/>
+                        )}
+                    />
                     <Route
-                        exact path="/"
+                        path="/profile"
                         render={() => (
                             <Profile
                                 id = { this.state.id }
@@ -114,7 +121,7 @@ export default class App extends React.Component {
                     <Route
                         path="/user/:id"
                         render = { props => (
-                            <Opp {...props} key={ props.match.url }/>
+                            <Opp {...props} user={this.state.user} key={ props.match.url }/>
                         )}
                     />
                     <Route history={this.history} path="/friends" component={Friends}/>

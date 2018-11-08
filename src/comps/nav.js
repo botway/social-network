@@ -25,7 +25,7 @@ const Nav = () => {
                 style={btnStyle}
                 type="submit">FRIENDS
             </button>
-            <button formAction="/"
+            <button formAction="/profile"
                 formMethod="get"
                 style={btnStyle}
                 type="submit">PROFILE

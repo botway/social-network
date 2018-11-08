@@ -27,7 +27,9 @@ const { createUser,
     getUsersByIdsDB,
     getChatMessages,
     saveChatMessage,
-    searchUsersDB
+    searchUsersDB,
+    getWallPostsDB,
+    saveWallPostDB
 } = require("./queries");
 
 app.use(compression());
@@ -76,13 +78,36 @@ const uploader = multer({
 });
 
 app.get("/searchusers", async (req, res) => {
-    console.log(req.query.searchStr);
     const data = await searchUsersDB(req.query.searchStr);
     res.json(data);
 });
 
+app.get("/getwallposts", async (req, res) => {
+    console.log(req.query);
+    try{
+        const data = await getWallPostsDB(req.query.userId);
+        res.json(data);
+    } catch(e){
+        console.log(e.error.message);
+    }
+});
+
+app.post("/savewallpost", async (req, res) => {
+    try{
+        await saveWallPostDB(req.body.data);
+        res.json({postSaved: true});
+    } catch(e){
+        console.log(e.error.message);
+    }
+});
+
 app.get("/user", async (req, res) => {
     const data = await getUserById(req.session.user.id);
+    res.json(data);
+});
+
+app.get("/userbyid", async (req, res) => {
+    const data = await getUserById(req.query.id);
     res.json(data);
 });
 

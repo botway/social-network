@@ -13,9 +13,7 @@ const wait = (ms) => {
 class Search extends React.Component {
     constructor(props){
         super(props);
-        this.state = {};
         this.handleChange = this.handleChange.bind(this);
-        this.wait = this.wait.bind(this);
         this.timeoutID;
     }
     async handleChange(e){
@@ -25,11 +23,6 @@ class Search extends React.Component {
             search: cachedVal
         },()=>{
             this.props.dispatch(searchUsers(this.state.search));
-        });
-    }
-    async wait(){
-        return new Promise (resolve => {
-            setTimeout(resolve, 250);
         });
     }
     render(){

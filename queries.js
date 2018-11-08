@@ -279,7 +279,6 @@ function saveChatMessage(data){
     return db
         .query(q, params)
         .then(results => {
-            console.log("save", results.rows);
             return results.rows[0];
         })
         .catch(err => console.log(err.message));
@@ -305,6 +304,45 @@ const searchUsersDB = function(str) {
             console.log(err.message);
         });
 };
+function getWallPostsDB (userId){
+    console.log(userId);
+    const q = `
+        SELECT * FROM wall_posts
+        WHERE uid = $1
+        ORDER BY created_at DESC
+        LIMIT 10;
+    `;
+    return db
+        .query(q,[userId])
+        .then( results => {
+            return results.rows;
+        })
+        .catch(err => console.log(err.message));
+
+}
+function saveWallPostDB(data){
+    console.log(data);
+    const q = `
+        INSERT INTO wall_posts
+        (uid, message, authorId)
+        VALUES
+        ($1, $2, $3)
+        RETURNING message, uid, created_at, authorId;
+    `;
+
+    const params = [
+        data.userId,
+        data.message,
+        data.authorId
+    ];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            return results.rows[0];
+        })
+        .catch(err => console.log(err.message));
+}
 module.exports={
     createUser,
     getUser,
@@ -320,5 +358,7 @@ module.exports={
     getUsersByIdsDB,
     getChatMessages,
     saveChatMessage,
-    searchUsersDB
+    searchUsersDB,
+    getWallPostsDB,
+    saveWallPostDB
 };

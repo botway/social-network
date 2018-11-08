@@ -2,10 +2,12 @@ import React from 'react';
 import axios from './axios';
 import Bio from './bio';
 import Friendship from './friendship';
+import WallPost from './wallpost'
 
 export default class Opp extends React.Component {
     constructor(props){
         super(props);
+        this.userId = this.props.match.params.id;
         this.state = {};
     }
 
@@ -33,6 +35,7 @@ export default class Opp extends React.Component {
                     <Bio bio={ this.state.bio } noedit={true}/>
                     <Friendship receiver_id = {this.props.match.params.id} />
                 </div>
+                <WallPost author={this.props.user} userId={this.userId} />
             </div>
         );
     }

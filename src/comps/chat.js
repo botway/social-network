@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { newChatMessage } from '../actions';
 import { sendChatMessage } from '../socket';
-import UserPic from './userpic'
+import UserPic from './userpic';
 
 class Chat extends React.Component {
     constructor(props){

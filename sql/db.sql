@@ -26,6 +26,13 @@ CREATE TABLE chat(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE wall_posts(s
+    id SERIAL PRIMARY KEY,
+    message VARCHAR(9999) NOT NULL,
+    uid INT NOT NULL REFERENCES registered_users(id),
+    authorId INT NOT NULL REFERENCES registered_users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 INSERT INTO images (url, uid) VALUES (
     'http://s3.amazonaws.com/spicedling/quEXS59O1ZCb07vz5pyv_X4uuRcyUk3t.svg',
@@ -34,3 +41,6 @@ INSERT INTO images (url, uid) VALUES (
 
 ALTER TABLE registered_users
 ADD COLUMN bio VARCHAR(1500);
+
+ALTER TABLE wall_posts
+ADD COLUMN authorId INT NOT NULL REFERENCES registered_users(id);

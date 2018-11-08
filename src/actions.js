@@ -60,6 +60,24 @@ export function newChatMessage (data) {
         message: data
     };
 }
+export async function getWallPosts (id) {
+    const result = await axios.get("/getwallposts",{
+        params: {userId: id}
+    });
+    return {
+        type: 'GET_WALL_POSTS',
+        val: result.data
+    };
+}
+
+export function saveWallPost (data) {
+    axios.post("/savewallpost", {data})
+    return {
+        type: 'SAVE_WALL_POST',
+        val: data
+    };
+}
+
 
 export function searchUsers (string) {
     let blank = {};

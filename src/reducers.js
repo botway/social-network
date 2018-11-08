@@ -72,5 +72,31 @@ export default function( state = {}, action ) {
             searchResults: action.val
         };
     }
+
+    if (action.type == 'GET_WALL_POSTS'){
+        state = {
+            ...state,
+            wallPosts: action.val
+        };
+    }
+
+    if (action.type == 'SAVE_WALL_POST'){
+        if(!state.wallPosts){
+            console.log("no state");
+            state = {
+                ...state,
+                wallPosts: [action.val]
+            }
+        } else {
+            console.log("with state");
+            state = {
+                ...state,
+                wallPosts: state.wallPosts.concat(
+                    action.val
+                )
+            };
+        }
+
+    }
     return state;
 }
