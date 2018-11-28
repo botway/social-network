@@ -1,10 +1,11 @@
 import React from 'react';
+import Search from  './search';
 
 const Nav = () => {
     const style = {
         display: "inline-block",
         verticalAlign: "top",
-        marginTop: "0",
+        marginTop: "5px",
         position: "absolute",
         left: "50%",
         transform: "translateX(-50%)"
@@ -40,6 +41,7 @@ const Nav = () => {
                 style={btnStyle}
                 type="submit">CHAT
             </button>
+            <Search />
         </form>
     );
 };

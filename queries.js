@@ -308,13 +308,16 @@ function getWallPostsDB (userId){
     console.log(userId);
     const q = `
         SELECT * FROM wall_posts
+        JOIN registered_users
+        ON uid = registered_users.id
         WHERE uid = $1
-        ORDER BY created_at DESC
+        ORDER BY wall_posts.created_at DESC
         LIMIT 10;
     `;
     return db
         .query(q,[userId])
         .then( results => {
+            console.log("sss", results.rows);
             return results.rows;
         })
         .catch(err => console.log(err.message));

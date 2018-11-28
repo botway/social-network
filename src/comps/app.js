@@ -82,16 +82,17 @@ export default class App extends React.Component {
         return(
             <BrowserRouter>
                 <div id="container">
-                    <ProfilePic right
-                        imgurl = { this.state.imgurl }
-                        id = { this.state.id }
-                        first_name = { this.state.first_name }
-                        last_name = { this.state.last_name }
-                        clickHandler ={ this.showUploader }
-                    />
-                    <Logo small />
-                    <Nav />
-                    <Search />
+                    <div className="header">
+                        <ProfilePic right
+                            imgurl = { this.state.imgurl }
+                            id = { this.state.id }
+                            first_name = { this.state.first_name }
+                            last_name = { this.state.last_name }
+                            clickHandler ={ this.showUploader }
+                        />
+                        <Link to={"/"}><Logo small /></Link>
+                        <Nav />
+                    </div>
                     { this.state.uploaderIsVisible &&
                         <Uploader onImgUploaded = { this.setImage }
                             userId = { this.state.id }

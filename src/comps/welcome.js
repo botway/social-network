@@ -10,7 +10,7 @@ const callToAction = "Sunt in culpa qui officia deserunt."
 const Welcome = () => {
     return (
         <div id="welcome">
-            <h1>WELCOME TO</h1>
+            <h1>WELCOME TO THE</h1>
             <Logo medium />
             <p>{desc}</p>
             <h2>{callToAction}</h2>

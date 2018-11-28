@@ -5,7 +5,7 @@ const imgUrl = "../assets/bones.svg";
 const Logo = (props) => {
     let size;
     if(props.small){
-        size = "5em";
+        size = "4.2em";
     } else if (props.medium) {
         size = "7em";
     } else if (props.large) {
